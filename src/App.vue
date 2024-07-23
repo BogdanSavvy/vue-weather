@@ -1,17 +1,22 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 
-import Header from '@/components/HeaderBar.vue'
+import HeaderBar from '@/components/HeaderBar.vue'
+import FooterBar from '@/components/FooterBar.vue'
 </script>
 
 <template>
   <div class="wrapper">
-    <Header />
+    <HeaderBar />
     <main class="content">
       <RouterView />
     </main>
-    <footer>footer</footer>
+    <FooterBar />
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+div {
+  margin-bottom: 20px;
+}
+</style>
