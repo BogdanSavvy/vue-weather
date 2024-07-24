@@ -58,7 +58,7 @@ button {
 
 .header {
   position: fixed;
-  top: -400px;
+  top: -350px;
   z-index: 100;
   display: flex;
   width: 100%;
@@ -76,13 +76,13 @@ button {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
 }
 
 .menu-wrapper {
   width: 100%;
-  height: 400px;
+  height: 410px;
   padding: 20px 15px;
   display: flex;
   flex-direction: column;
@@ -94,10 +94,15 @@ button {
 }
 
 .menu-trigger {
+  cursor: pointer;
   position: relative;
-  width: 100px;
-  height: 90px;
-  padding: 15px;
+  width: 70px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 10px 20px;
+  margin-right: 50px;
   border-radius: 0 0 50% 50%;
   background-color: var(--dark-grey);
 
@@ -106,8 +111,7 @@ button {
     height 0.3s ease-in-out;
 }
 .menu-trigger:hover {
-  height: 100px;
-  padding: 20px 15px 15px;
+  height: 55px;
 }
 .menu-trigger img {
   max-width: 100%;
