@@ -48,6 +48,7 @@ const handleClick = () => {
       object-fit: cover;
     }
   }
+
   &.opened {
     .menu {
       left: 0;
@@ -63,6 +64,7 @@ const handleClick = () => {
   width: 500px;
   backdrop-filter: blur(10px);
   transition: left 0.8s ease;
+
   &__wrapper {
     height: 100%;
     width: 100%;

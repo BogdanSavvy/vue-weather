@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue'
 const props = defineProps(['currentTemperature', 'city', 'weatherIcon'])
 
-const tempCelsium = props.currentTemperature - 273.15
+const tempCelsium = Math.round(props.currentTemperature - 273.15)
 
 const icon = ref(props.weatherIcon)
 
@@ -13,7 +13,7 @@ const imageUrl = computed(() => {
 
 <template>
   <div class="widget">
-    <div class="widget__temperature">{{ Math.round(tempCelsium) }}&deg;</div>
+    <div class="widget__temperature">{{ tempCelsium }}&deg;</div>
     <div class="widget__city-info city-info">
       <h1 class="city-info__name">{{ props.city }}</h1>
       <div class="city-info__date-time"></div>

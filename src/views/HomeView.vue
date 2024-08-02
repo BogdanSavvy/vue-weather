@@ -8,6 +8,7 @@ import type { CityDataType, WeatherDataType } from '@/types'
 import { getCoords, getCurrentWeather } from '@/api/weatherApi'
 import WeatherBanner from '@/components/WeatherBanner.vue'
 import WeatherWidget from '@/components/WeatherWidget.vue'
+import WeatherDetails from '@/components/WeatherDetails.vue'
 
 const citiesData: Ref<CityDataType[]> = ref([])
 const formdata = reactive({
@@ -99,7 +100,7 @@ const deleteCity = async (cityId: string) => {
         />
       </div>
       <div class="weather-view__details">
-        
+        <WeatherDetails />
       </div>
     </div>
     <div v-if="!citiesData[0]">Loading ...</div>
@@ -120,11 +121,16 @@ const deleteCity = async (cityId: string) => {
   }
 
   &__widget {
+    flex-grow: 1;
     align-self: flex-end;
   }
 
   &__details {
-
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 600px;
   }
 }
 </style>

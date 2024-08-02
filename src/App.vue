@@ -10,4 +10,3 @@ import HeaderBar from '@/components/HeaderBar.vue'
     <RouterView />
   </main>
 </template>
-
