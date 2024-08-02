@@ -1,11 +1,8 @@
 <script setup lang="ts">
 import type { CityDataType } from '@/types'
-import { defineProps } from 'vue'
 
 const props = defineProps(['cardData'])
 const { city, country, weatherData }: CityDataType = props.cardData
-
-console.log(weatherData.weather[0].main)
 </script>
 
 <template>
@@ -14,9 +11,13 @@ console.log(weatherData.weather[0].main)
       <div class="card__top">
         <p class="card__temp">{{ weatherData.main.temp }}</p>
         <p class="card__wind">{{ weatherData.wind.speed }}</p>
+        <p>{{ weatherData.weather[0].main }}</p>
       </div>
       <div class="card__bottom">
         <h3 class="card__city">{{ city }}{{ country ? `/${country}` : '' }}</h3>
+      </div>
+      <div>
+        <button @click="$emit('delete', cardData.id)">Delete</button>
       </div>
     </div>
     <div class="card__bg">
@@ -27,14 +28,14 @@ console.log(weatherData.weather[0].main)
       />
       <img
         v-if="weatherData.weather[0].main === 'Clear'"
-        src="https://pin.it/4vM09YyGy"
+        src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZTB5dWRyeDVydzhsbHNqczNvaGFjM3gyZmx2emZoaXJ2MGF4bWsxYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/c31WXGK1jLQBy/giphy.webp"
         alt="weather"
       />
     </div>
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .card {
   position: relative;
   overflow: hidden;
@@ -45,37 +46,37 @@ console.log(weatherData.weather[0].main)
   -moz-box-shadow: inset 0px 0px 33px 0px rgba(0, 0, 0, 0.75);
   box-shadow: inset 0px 0px 33px 0px rgba(0, 0, 0, 0.75);
   border-radius: 10px;
-}
-.card__body {
-  position: relative;
-  z-index: 2;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
 
-.card__top {
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+  &__body {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 
-.card__bottom {
-  font-size: 25px;
-}
+  &__top {
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__bottom {
+    font-size: 25px;
+  }
 
-.card__bg {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-}
-
-.card__bg img {
-  height: 100%;
-  max-width: 100%;
+  &__bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    img,
+    video {
+      height: 100%;
+      max-width: 100%;
+    }
+  }
 }
 </style>

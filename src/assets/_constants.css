@@ -1,4 +1,6 @@
 :root {
+  --header-height: 100px;
+  
   --base-bg: #222831;
   --dark-grey: #393e46;
   --light-grey: #eeeeee;

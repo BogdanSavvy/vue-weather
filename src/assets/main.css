@@ -43,9 +43,9 @@ body {
   font-family: 'Quicksand', sans-serif;
   font-size: 16px;
   font-weight: 400;
-  line-height: 1;
-  color: var(--txt-main);
-  background-color: var(--base-bg);
+  line-height: 1.4;
+  color: #ffffff;
+  position: relative;
 }
 
 input,
@@ -94,20 +94,12 @@ h6 {
   font-weight: inherit;
 }
 
-.wrapper {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
 .content {
-  margin-top: 100px;
-  position: relative;
-  flex: 1 1 auto;
+  height: 100vh;
 }
 
 .container {
-  max-width: 1460px;
+  max-width: 1550px;
   padding: 0 15px;
   margin: 0 auto;
 }

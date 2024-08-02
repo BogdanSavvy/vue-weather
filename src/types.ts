@@ -1,4 +1,5 @@
 export type CityDataType = {
+  id: string
   city: string
   country?: string
   weatherData: WeatherDataType
