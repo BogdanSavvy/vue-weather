@@ -51,7 +51,7 @@ onMounted(() => getCityDataById())
         />
       </div>
       <div class="weather-view__details">
-        <WeatherDetails :wetherData="currentCityData.weatherData" />
+        <WeatherDetails :weatherData="currentCityData.weatherData" />
       </div>
     </div>
     <WeatherBanner :code="currentCityData.weatherData.weather[0].icon" />
