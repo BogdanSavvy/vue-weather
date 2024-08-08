@@ -1,13 +1,20 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
-const props = defineProps(['code'])
+const props = defineProps<{ code: string }>()
 
 const video = ref(props.code)
 
 const videoUrl = computed(() => {
   return new URL(`../assets/videos/${video.value}.mp4`, import.meta.url).href
 })
+
+watch(
+  () => props.code,
+  (newCode) => {
+    video.value = newCode
+  }
+)
 </script>
 
 <template>

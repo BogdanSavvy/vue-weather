@@ -1,4 +1,5 @@
 <script lang="ts" setup></script>
+
 <template>
   <div class="details">
     <div class="details__container">Weather details ...</div>

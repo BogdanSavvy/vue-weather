@@ -1,13 +1,23 @@
 <script setup lang="ts">
 import type { CityDataType } from '@/types'
+import { RouterLink } from 'vue-router'
 
-const props = defineProps(['cardData'])
-const { city, country, weatherData }: CityDataType = props.cardData
+const props = defineProps<{
+  cardData: CityDataType
+  deleteCity: (id: string) => void
+}>()
+
+const { id, city } = props.cardData
 </script>
 
 <template>
   <div class="card">
-    <div class="card__body">{{ city }}</div>
+    <div class="card__body">
+      <div class="card__city">
+        <RouterLink :to="`/weather/${id}`">{{ city }}</RouterLink>
+      </div>
+      <button @click.prevent="() => deleteCity(id)" class="card__delete"></button>
+    </div>
   </div>
 </template>
 
@@ -18,10 +28,6 @@ const { city, country, weatherData }: CityDataType = props.cardData
   width: 100%;
   height: 80px;
   padding: 10px;
-  -webkit-box-shadow: inset 0px 0px 33px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: inset 0px 0px 33px 0px rgba(0, 0, 0, 0.75);
-  box-shadow: inset 0px 0px 33px 0px rgba(0, 0, 0, 0.75);
-  border-radius: 10px;
 
   &__body {
     position: relative;
@@ -31,6 +37,38 @@ const { city, country, weatherData }: CityDataType = props.cardData
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+  }
+
+  &__city {
+    a {
+      color: inherit;
+    }
+  }
+
+  &__delete {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      mask: var(--delete-icon) no-repeat center / cover;
+      background-color: #ffffff;
+      transition: background-color 0.3s ease;
+    }
+
+    &:hover {
+      &::before {
+        background-color: #e63737;
+        transition: background-color 0.3s ease;
+      }
+    }
   }
 }
 </style>

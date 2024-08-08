@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import { reactive, ref, onMounted, type Ref } from 'vue'
-import { doc, collection, getDocs, updateDoc, setDoc, deleteDoc } from 'firebase/firestore'
+import { ref, onMounted, type Ref } from 'vue'
+import { doc, collection, getDocs, updateDoc, deleteDoc } from 'firebase/firestore'
 import { db } from '@/firebase/config'
 
 import type { CityDataType, WeatherDataType } from '@/types'
@@ -39,16 +39,6 @@ const fetchWeather = async () => {
       } as CityDataType)
     }
   })
-}
-
-
-
-const deleteCity = async (cityId: string) => {
-  // Delete the city document from Firestore
-  await deleteDoc(doc(db, 'cities', cityId))
-
-  // Update the citiesData array to remove the deleted city
-  citiesData.value = citiesData.value.filter((city) => city.id !== cityId)
 }
 
 onMounted(() => fetchWeather())
