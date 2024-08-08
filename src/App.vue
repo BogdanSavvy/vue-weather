@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import { ref, onMounted, type Ref } from 'vue'
-import { doc, collection, getDocs, updateDoc, deleteDoc } from 'firebase/firestore'
+import { doc, collection, getDocs, updateDoc } from 'firebase/firestore'
 import { db } from '@/firebase/config'
 
 import type { CityDataType, WeatherDataType } from '@/types'
@@ -9,7 +9,6 @@ import HeaderBar from '@/components/HeaderBar.vue'
 import { getCoords, getCurrentWeather } from './api/weatherApi'
 
 const citiesData: Ref<CityDataType[]> = ref([])
-
 
 const fetchWeather = async () => {
   const querySnapshot = await getDocs(collection(db, 'cities'))
