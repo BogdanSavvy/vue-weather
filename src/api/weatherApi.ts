@@ -3,7 +3,7 @@ import axios from 'axios'
 import type { WeatherDataType, WeatherForecast } from '@/types'
 
 const instance = axios.create({
-  baseURL: 'http://api.openweathermap.org',
+  baseURL: 'https://api.openweathermap.org',
   params: {
     appid: import.meta.env.VITE_OPENWEATHER_API_KEY
   }
