@@ -3,6 +3,8 @@ import { computed } from 'vue'
 
 import { convertTemperature } from '@/helpers/helpers'
 import type { WeatherDataType } from '@/types'
+import WeatherForecast from '@/components/WeatherForecast.vue'
+import LoadingSpinner from '@/components/LoadingSpinner.vue'
 
 const props = defineProps<{
   weatherData: WeatherDataType
@@ -13,7 +15,8 @@ const tempMax = computed(() => convertTemperature(props.weatherData.main.temp_ma
 </script>
 
 <template>
-  <div class="details">
+  <LoadingSpinner v-if="!props.weatherData" />
+  <div v-else class="details">
     <div class="details__container">
       <div class="details__info">
         <h2 class="details__weather">
@@ -54,7 +57,7 @@ const tempMax = computed(() => convertTemperature(props.weatherData.main.temp_ma
           </li>
         </ul>
       </div>
-      <div>today`s forecast ...</div>
+      <WeatherForecast :cityName="props.weatherData.name" />
     </div>
   </div>
 </template>
@@ -63,8 +66,9 @@ const tempMax = computed(() => convertTemperature(props.weatherData.main.temp_ma
 .details {
   height: 100%;
   width: 100%;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(20px);
   font-size: 18px;
+  overflow-y: auto;
 
   &__container {
     padding: 50px;

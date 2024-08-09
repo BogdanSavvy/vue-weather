@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import WeatherBanner from '@/components/WeatherBanner.vue'
 import type { CityDataType } from '@/types'
+import WeatherBanner from '@/components/WeatherBanner.vue'
 
 const cities = defineProps<{
   data: CityDataType[]

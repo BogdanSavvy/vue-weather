@@ -1,11 +1,12 @@
 <script lang="ts" setup>
-import { reactive, ref, type Ref } from 'vue'
+import { computed, reactive, ref, type Ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import type { CityDataType, WeatherDataType } from '@/types'
 import { collection, deleteDoc, doc, setDoc } from 'firebase/firestore'
 import { db } from '@/firebase/config'
 import { getCoords, getCurrentWeather } from '@/api/weatherApi'
+import { capitalizeFirstLetter } from '@/helpers/helpers'
 import WeatherCard from '@/components/WeatherCard.vue'
 
 const props = defineProps(['data'])
@@ -15,45 +16,66 @@ const isOpen = ref<Boolean>(false)
 const formdata = reactive({
   cityname: ''
 })
+
+const formErrors = reactive({
+  cityname: ''
+})
+
 const route = useRoute()
 const router = useRouter()
 
-const handleClick = () => {
-  isOpen.value = !isOpen.value
+const toggleMenu = (event?: Event) => {
+  if (event && (event.target as HTMLElement).tagName.toLowerCase() === 'a') {
+    isOpen.value = !isOpen.value
+  } else if (event && (event.target as HTMLElement).classList.contains('burger')) {
+    isOpen.value = !isOpen.value
+  }
 }
 
-const handleSubmit = async () => {
-  const newCityData = doc(collection(db, 'cities'))
+// Validation Rules
+const validateCityname = () => {
+  if (!formdata.cityname) {
+    formErrors.cityname = 'City name is required.'
+  } else if (formdata.cityname.length < 3) {
+    formErrors.cityname = 'City name must be at least 3 characters long.'
+  } else {
+    formErrors.cityname = ''
+  }
+}
 
-  if (!formdata.cityname || formdata.cityname.length < 3) {
+// Computed property to check if the form is valid
+const isFormValid = computed(() => {
+  validateCityname()
+  return !formErrors.cityname
+})
+
+const handleSubmit = async () => {
+  validateCityname()
+
+  if (!isFormValid.value) {
     return
   }
 
-  const { lat, lon } = await getCoords(formdata.cityname)
-
-  const cityWeather: WeatherDataType = await getCurrentWeather(lat, lon)
-
   try {
-    await setDoc(newCityData, {
-      city: formdata.cityname,
+    const { lat, lon } = await getCoords(formdata.cityname)
+
+    const cityWeather: WeatherDataType = await getCurrentWeather(lat, lon)
+
+    const newCityData = doc(collection(db, 'cities'))
+    const cityDoc = {
+      city: capitalizeFirstLetter(formdata.cityname),
       country: '',
       id: newCityData.id,
       weatherData: cityWeather
-    })
+    }
+
+    await setDoc(newCityData, cityDoc)
+
+    citiesData.value.push(cityDoc)
+    formdata.cityname = ''
+    router.replace(`/weather/${newCityData.id}`)
   } catch (error) {
     console.error(error)
-    throw new Error('Something went wrong!')
-  } finally {
-    citiesData.value.push({
-      city: formdata.cityname,
-      country: '',
-      id: newCityData.id,
-      weatherData: cityWeather
-    } as CityDataType)
-
-    formdata.cityname = ''
-
-    router.replace(`/weather/${newCityData.id}`)
   }
 }
 
@@ -61,19 +83,18 @@ const deleteCity = async (cityId: string) => {
   try {
     await deleteDoc(doc(db, 'cities', cityId))
     citiesData.value = citiesData.value.filter((city) => city.id !== cityId)
-  } catch (error) {
-    console.error(error)
-    throw new Error('Something went wrong, try again later!')
-  } finally {
+
     if (route.params.id === cityId) {
       router.replace('/')
     }
+  } catch (error) {
+    console.error(error)
   }
 }
 </script>
 
 <template>
-  <header class="header" :class="isOpen && 'opened'">
+  <header :class="['header', { opened: isOpen }]">
     <div class="header__container">
       <div class="header__actions">
         <button
@@ -81,17 +102,23 @@ const deleteCity = async (cityId: string) => {
           class="header__goBack"
           @click="() => router.go(-1)"
         ></button>
-        <button @click="handleClick" :class="isOpen && 'opened'" class="burger"></button>
+        <button @click="toggleMenu" :class="{ opened: isOpen }" class="burger"></button>
       </div>
       <div class="header__search">
-        <form @submit.prevent="handleSubmit" class="search">
+        <form @submit.prevent="handleSubmit" :class="formErrors.cityname && 'error'" class="search">
           <button type="submit"></button>
-          <input v-model="formdata.cityname" type="text" required />
+          <div class="search__field">
+            <input v-model="formdata.cityname" type="text" required @input="validateCityname" />
+            <span v-if="formErrors.cityname">{{ formErrors.cityname }}</span>
+          </div>
         </form>
       </div>
     </div>
-    <div class="header__menu menu">
-      <div class="menu__wrapper">
+    <aside class="menu" @click="toggleMenu">
+      <div v-if="!citiesData || citiesData.length === 0" class="empty">
+        <p>The weather data is empty.<br />Add more cities to explore the weather view!</p>
+      </div>
+      <div v-else class="menu__wrapper">
         <WeatherCard
           v-for="item in citiesData"
           :key="item.id"
@@ -99,17 +126,13 @@ const deleteCity = async (cityId: string) => {
           :deleteCity="deleteCity"
         />
       </div>
-    </div>
+    </aside>
   </header>
 </template>
 
 <style lang="scss" scoped>
-a {
-  color: inherit;
-}
-
 .header {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   height: var(--header-height);
@@ -136,9 +159,6 @@ a {
     display: flex;
     flex-direction: row;
     align-items: center;
-  }
-
-  &__search {
   }
 
   &__goBack {
@@ -217,20 +237,33 @@ a {
   }
 }
 
+.empty {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  p {
+    max-width: 80%;
+    font-size: 18px;
+  }
+}
+
 .menu {
   overflow-y: auto;
   position: absolute;
-  top: 0;
+  top: var(--header-height);
   left: -100%;
-  height: 100vh;
+  height: calc(100vh - var(--header-height));
   width: 500px;
   backdrop-filter: blur(10px);
   transition: left 0.8s ease;
 
   &__wrapper {
-    height: 100%;
     width: 100%;
-    padding: 120px 20px 0px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -244,6 +277,29 @@ a {
   align-items: center;
   gap: 10px;
   width: 520px;
+
+  &.error {
+    &::before,
+    &::after {
+      background-color: #e63737;
+    }
+
+    .search__field {
+      span {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        transform: translateY(110%);
+        color: #e63737;
+        font-size: 16px;
+      }
+    }
+  }
+
+  &__field {
+    position: relative;
+    width: 100%;
+  }
 
   input {
     background: transparent;

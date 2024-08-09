@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import type { WeatherDataType } from '@/types'
+import type { WeatherDataType, WeatherForecast } from '@/types'
 
 const instance = axios.create({
   baseURL: 'http://api.openweathermap.org',
@@ -36,6 +36,21 @@ export const getCurrentWeather = async (lat: number, lon: number): Promise<Weath
     }
   } catch (error) {
     console.error('Error fetching weather data:', error)
+    throw new Error('Failed to fetch weather data')
+  }
+}
+
+export const getForecast = async (cityName: string): Promise<WeatherForecast> => {
+  try {
+    const response = await instance.get(`/data/2.5/forecast?q=${cityName}`)
+
+    if (response.status === 200) {
+      return response.data as WeatherForecast
+    } else {
+      throw new Error('Failed to fetch weather data')
+    }
+  } catch (error) {
+    console.error('Error fetching hourly forecast weather data:', error)
     throw new Error('Failed to fetch weather data')
   }
 }

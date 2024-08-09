@@ -19,3 +19,10 @@ export const getDateTime = (timezone: number) => {
 
   return `${dayOfWeek}, ${month} ${dayOfMonth} ${hours}:${minutes}`
 }
+
+export const capitalizeFirstLetter = (cityName: string) => {
+  return cityName
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ')
+}

@@ -81,6 +81,7 @@ onMounted(() => getCityDataById())
     right: 0;
     height: 100vh;
     width: 600px;
+    z-index: 0;
   }
 }
 </style>

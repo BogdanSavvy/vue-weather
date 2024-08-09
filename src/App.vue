@@ -2,11 +2,11 @@
 import { RouterView } from 'vue-router'
 import { ref, onMounted, type Ref } from 'vue'
 import { doc, collection, getDocs, updateDoc } from 'firebase/firestore'
-import { db } from '@/firebase/config'
 
 import type { CityDataType, WeatherDataType } from '@/types'
+import { db } from '@/firebase/config'
+import { getCoords, getCurrentWeather } from '@/api/weatherApi'
 import HeaderBar from '@/components/HeaderBar.vue'
-import { getCoords, getCurrentWeather } from './api/weatherApi'
 
 const citiesData: Ref<CityDataType[]> = ref([])
 
