@@ -114,5 +114,13 @@ onMounted(() => fetchForecast(props.cityName))
     font-size: 24px;
     opacity: 0.7;
   }
+
+  @media (max-width: 425px) {
+    &__icon {
+      img {
+        object-fit: contain;
+      }
+    }
+  }
 }
 </style>

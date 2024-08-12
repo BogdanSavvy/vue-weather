@@ -17,7 +17,7 @@ const tempMax = computed(() => convertTemperature(props.weatherData.main.temp_ma
 <template>
   <LoadingSpinner v-if="!props.weatherData" />
   <div v-else class="details">
-    <div class="details__container">
+    <div class="details__container container">
       <div class="details__info">
         <h2 class="details__weather">
           Weather now looks like {{ props.weatherData.weather[0].description }}
@@ -178,6 +178,18 @@ const tempMax = computed(() => convertTemperature(props.weatherData.main.temp_ma
           );
         }
       }
+    }
+  }
+
+  @media (max-width: 1023.9px) {
+    &__container {
+      padding: 20px 15px;
+    }
+  }
+
+  @media (max-width: 425px) {
+    &__list {
+      gap: 25px;
     }
   }
 }

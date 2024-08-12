@@ -41,7 +41,7 @@ onMounted(() => getCityDataById())
 <template>
   <LoadingCircle v-if="!currentCityData" />
   <div v-else class="weather-view">
-    <div class="weather-view__container container">
+    <div class="weather-view__container">
       <div class="weather-view__widget">
         <WeatherWidget
           :currentTemperature="currentCityData.weatherData.main.temp"
@@ -82,6 +82,27 @@ onMounted(() => getCityDataById())
     height: 100vh;
     width: 600px;
     z-index: 0;
+  }
+
+  @media (max-width: 1200px) {
+    &__details {
+      width: 40%;
+    }
+  }
+
+  @media (max-width: 1023.9px) {
+    &__container {
+      flex-direction: column;
+    }
+    &__widget {
+      align-self: stretch;
+    }
+    &__details {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+    }
   }
 }
 </style>

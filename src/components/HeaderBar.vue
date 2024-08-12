@@ -149,10 +149,11 @@ const deleteCity = async (cityId: string) => {
   &__container {
     height: 100%;
     width: 100%;
+    padding: 0 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 30px;
+    gap: 30px;
   }
 
   &__actions {
@@ -185,6 +186,19 @@ const deleteCity = async (cityId: string) => {
     &:hover {
       transform: translateX(-5px);
       transition: transform 0.5s ease;
+    }
+  }
+
+  @media (max-width: 1023.9px) {
+    &__container {
+      padding: 0 15px;
+    }
+  }
+  
+  @media (max-width: 425px) {
+    &__goBack {
+      width: 30px;
+      height: 30px;
     }
   }
 }
@@ -235,6 +249,11 @@ const deleteCity = async (cityId: string) => {
       transform: scale(0);
     }
   }
+
+  @media (max-width: 425px) {
+    width: 40px;
+    height: 50px;
+  }
 }
 
 .empty {
@@ -255,7 +274,7 @@ const deleteCity = async (cityId: string) => {
   overflow-y: auto;
   position: absolute;
   top: var(--header-height);
-  left: -100%;
+  left: -200%;
   height: calc(100vh - var(--header-height));
   width: 500px;
   backdrop-filter: blur(10px);
@@ -267,6 +286,13 @@ const deleteCity = async (cityId: string) => {
     display: flex;
     flex-direction: column;
     gap: 15px;
+  }
+
+  @media (max-width: 768px) {
+    width: 400px;
+  }
+  @media (max-width: 425px) {
+    width: 100%;
   }
 }
 
@@ -363,6 +389,10 @@ const deleteCity = async (cityId: string) => {
         transition: background-color 0.3s ease;
       }
     }
+  }
+
+  @media (max-width: 1200px) {
+    width: 100%;
   }
 }
 </style>

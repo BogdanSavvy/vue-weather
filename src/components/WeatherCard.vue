@@ -98,5 +98,9 @@ const { id, city } = props.cardData
       transition: background-color 0.3s ease;
     }
   }
+
+  @media (max-width: 768px) {
+    height: 60px;
+  }
 }
 </style>

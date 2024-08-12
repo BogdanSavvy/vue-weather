@@ -47,5 +47,37 @@ const cities = defineProps<{
     max-width: 60%;
     font-size: 22px;
   }
+
+  @media (max-width: 1024px) {
+    h1 {
+      font-size: 80px;
+      line-height: 1.2;
+    }
+
+    p {
+      max-width: 80%;
+      font-size: 20px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 62px;
+    }
+
+    p {
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 425px) {
+    h1 {
+      font-size: 32px;
+    }
+
+    p {
+      font-size: 14px;
+    }
+  }
 }
 </style>
