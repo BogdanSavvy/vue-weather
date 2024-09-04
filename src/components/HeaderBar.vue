@@ -3,7 +3,7 @@ import { computed, reactive, ref, type Ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import type { CityDataType, WeatherDataType } from '@/types'
-import { collection, deleteDoc, doc, setDoc } from 'firebase/firestore'
+import { collection, deleteDoc, doc, getDocs, setDoc } from 'firebase/firestore'
 import { db } from '@/firebase/config'
 import { getCoords, getCurrentWeather } from '@/api/weatherApi'
 import { capitalizeFirstLetter } from '@/helpers/helpers'
@@ -81,11 +81,18 @@ const handleSubmit = async () => {
 
 const deleteCity = async (cityId: string) => {
   try {
-    await deleteDoc(doc(db, 'cities', cityId))
-    citiesData.value = citiesData.value.filter((city) => city.id !== cityId)
+    const citiesCollection = collection(db, 'cities')
+    const citiesSnapshot = await getDocs(citiesCollection)
 
-    if (route.params.id === cityId) {
-      router.replace('/')
+    if (citiesSnapshot.size > 1) {
+      await deleteDoc(doc(db, 'cities', cityId))
+      citiesData.value = citiesData.value.filter((city) => city.id !== cityId)
+
+      if (route.params.id === cityId) {
+        router.replace('/')
+      }
+    } else {
+      throw new Error('You can not delete last city!')
     }
   } catch (error) {
     console.error(error)
@@ -194,7 +201,7 @@ const deleteCity = async (cityId: string) => {
       padding: 0 15px;
     }
   }
-  
+
   @media (max-width: 425px) {
     &__goBack {
       width: 30px;
